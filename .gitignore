@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# dependencies / artifacts
+node_modules/
+*.log
+*.tgz
+
+# editors
+.idea/
+.vscode/
+
+# secrets / scanners
+.env
+.env.*
+.gitleaks-report.json

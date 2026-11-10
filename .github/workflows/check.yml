@@ -1,0 +1,41 @@
+name: check
+
+# 最小门禁：所有插件零依赖、无构建步骤，所以 CI 只做语法、清单与单测校验。
+# actions/checkout 按 commit SHA 固定，避免标签被移动带来的供应链风险。
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Syntax check (host, client and test halves)
+        run: |
+          for f in packages/*/*.js packages/*/test/*.mjs packages/dsh-web-restart/_smoke/*.mjs; do
+            node --check "$f" || exit 1
+          done
+
+      - name: Unit tests
+        # 显式 glob：Node 22 的 runner 上 `node --test test/` 会把目录当模块解析而报
+        # MODULE_NOT_FOUND（本机 Node 26 不会），所以不依赖目录扫描语义。
+        run: node --test packages/*/test/*.test.mjs
+
+      - name: Validate manifests
+        run: |
+          node -e "
+          const fs = require('node:fs'), path = require('node:path');
+          for (const name of fs.readdirSync('packages')) {
+            const dir = path.join('packages', name);
+            const pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
+            if (pkg.repository?.directory !== dir) throw new Error(name + ': repository.directory must be ' + dir);
+            const patch = pkg.dsh?.bundle?.patch;
+            if (patch && !fs.existsSync(path.join(dir, patch))) throw new Error(name + ': dsh.bundle.patch ' + patch + ' is missing');
+          }
+          console.log('manifests ok');
+          "

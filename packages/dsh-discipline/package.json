@@ -1,0 +1,28 @@
+{
+  "name": "dsh-discipline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "description": "DeepSeek Harness plugin: a static system-prompt section that encodes working discipline (decision-oriented reporting, deliverable as a valid stopping point, no mid-task stalls).",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "system-prompt"
+  ],
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0x-0cd/dsh-plugins.git",
+    "directory": "packages/dsh-discipline"
+  },
+  "homepage": "https://github.com/0x-0cd/dsh-plugins/tree/main/packages/dsh-discipline#readme",
+  "bugs": {
+    "url": "https://github.com/0x-0cd/dsh-plugins/issues"
+  }
+}

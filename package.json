@@ -1,0 +1,13 @@
+{
+  "name": "dsh-plugins",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Self-developed DeepSeek Harness (dsh) plugins, one installable package each.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test packages/*/test/*.test.mjs",
+    "smoke": "node --test packages/dsh-web-restart/_smoke/*.mjs",
+    "check": "for f in packages/*/*.js; do node --check \"$f\" || exit 1; done"
+  },
+  "license": "MIT"
+}
